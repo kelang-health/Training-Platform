@@ -314,6 +314,8 @@ function apiPost(action, payload) {
       else frame.remove();
     };
     const onMessage = event => {
+      const envelope = event.data;
+      if (!envelope || envelope.requestId !== requestId) return;
       let trustedGoogleOrigin = false;
       try {
         const eventUrl = new URL(event.origin);
@@ -324,9 +326,9 @@ function apiPost(action, payload) {
           host.endsWith('-script.googleusercontent.com')
         );
       } catch (error) { trustedGoogleOrigin = false; }
-      if (!trustedGoogleOrigin) return;
-      const envelope = event.data;
-      if (!envelope || envelope.requestId !== requestId) return;
+      // Apps Script IFRAME sandbox can expose an opaque `null` origin. It is
+      // accepted only after the unguessable per-request UUID matches.
+      if (!trustedGoogleOrigin && event.origin !== 'null') return;
       cleanup(true);
       if (envelope.ok) resolve(envelope.result);
       else reject(new Error(envelope.error && envelope.error.message || 'API ตอบกลับไม่สำเร็จ'));
