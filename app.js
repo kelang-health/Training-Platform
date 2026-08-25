@@ -314,7 +314,17 @@ function apiPost(action, payload) {
       else frame.remove();
     };
     const onMessage = event => {
-      if (event.source !== frame.contentWindow) return;
+      let trustedGoogleOrigin = false;
+      try {
+        const eventUrl = new URL(event.origin);
+        const host = eventUrl.hostname.toLowerCase();
+        trustedGoogleOrigin = eventUrl.protocol === 'https:' && (
+          host === 'script.google.com' ||
+          host === 'script.googleusercontent.com' ||
+          host.endsWith('-script.googleusercontent.com')
+        );
+      } catch (error) { trustedGoogleOrigin = false; }
+      if (!trustedGoogleOrigin) return;
       const envelope = event.data;
       if (!envelope || envelope.requestId !== requestId) return;
       cleanup(true);
