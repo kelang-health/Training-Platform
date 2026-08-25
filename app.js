@@ -304,22 +304,25 @@ function apiPost(action, payload) {
       transport: 'iframe'
     });
     form.appendChild(field);
-    const cleanup = () => {
+    const cleanup = deferFrameRemoval => {
       window.clearTimeout(timer);
       window.removeEventListener('message', onMessage);
       form.remove();
-      frame.remove();
+      // GAS injects gas-hub.js into HtmlService responses. Removing its iframe
+      // during initialisation can race with its MutationObserver.
+      if (deferFrameRemoval) window.setTimeout(() => frame.remove(), 500);
+      else frame.remove();
     };
     const onMessage = event => {
       if (event.source !== frame.contentWindow) return;
       const envelope = event.data;
       if (!envelope || envelope.requestId !== requestId) return;
-      cleanup();
+      cleanup(true);
       if (envelope.ok) resolve(envelope.result);
       else reject(new Error(envelope.error && envelope.error.message || 'API ตอบกลับไม่สำเร็จ'));
     };
     window.addEventListener('message', onMessage);
-    const timer = window.setTimeout(() => { cleanup(); reject(new Error('Public API ใช้เวลานานเกินกำหนด')); }, timeoutMs);
+    const timer = window.setTimeout(() => { cleanup(false); reject(new Error('Public API ใช้เวลานานเกินกำหนด')); }, timeoutMs);
     document.body.appendChild(frame);
     document.body.appendChild(form);
     form.submit();
