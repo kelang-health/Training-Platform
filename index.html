@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="description" content="ระบบประเมินผลการฝึกอบรม อสม. และออกใบรับรอง">
+  <meta name="theme-color" content="#6C63FF">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: https:; frame-src https://script.google.com https://script.googleusercontent.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action https://script.google.com; frame-ancestors 'none'; upgrade-insecure-requests">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">ข้ามไปยังเนื้อหาหลัก</a>
+
+  <div class="app-shell" id="appShell">
+    <header class="app-header">
+      <div class="brand" aria-label="ชื่อระบบ">
+        <div class="brand__mark" aria-hidden="true">อสม.</div>
+        <div>
+          <p class="brand__eyebrow">OSM Training Platform</p>
+          <h1 class="brand__title" id="appName">ระบบประเมินผลการฝึกอบรม อสม.</h1>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="header-status" id="systemStatus" role="status" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>กำลังตรวจสอบระบบ</span>
+        </div>
+      </div>
+    </header>
+
+    <nav class="progress-card" aria-label="ขั้นตอนการเข้าร่วมอบรม">
+      <ol class="stepper">
+        <li class="stepper__item is-active" data-step="registration" aria-current="step">
+          <span class="stepper__number">1</span><span>ลงทะเบียน</span>
+        </li>
+        <li class="stepper__item" data-step="pre-test">
+          <span class="stepper__number">2</span><span>Pre-test</span>
+        </li>
+        <li class="stepper__item" data-step="post-test">
+          <span class="stepper__number">3</span><span>Post-test</span>
+        </li>
+        <li class="stepper__item is-disabled" data-step="evaluation">
+          <span class="stepper__number">4</span><span>ประเมิน</span>
+        </li>
+        <li class="stepper__item is-disabled" data-step="certificate">
+          <span class="stepper__number">5</span><span>Certificate</span>
+        </li>
+      </ol>
+    </nav>
+
+    <main id="mainContent" tabindex="-1">
+      <section class="page-section is-active" id="page-home" data-page="home">
+        <div class="hero">
+          <div class="hero__content">
+            <span class="pill">Milestone 8 · Secure GitHub API</span>
+            <h2>เรียนรู้ ประเมินผล และรับใบประกาศในระบบเดียว</h2>
+            <p id="organizationText" class="hero__lead">
+              ระบบกำลังโหลดข้อมูลหลักสูตร กรุณารอสักครู่
+            </p>
+
+            <div class="hero__actions">
+              <button class="button button--primary" id="startButton" type="button" disabled>
+                เริ่มลงทะเบียน
+              </button>
+              <button class="button button--secondary" id="continueButton" type="button" hidden>
+                ทำรายการเดิมต่อ
+              </button>
+              <button class="button button--secondary" id="findRegistrationButton" type="button">
+                ค้นหารายการเดิม
+              </button>
+              <button class="button button--ghost" id="refreshButton" type="button">
+                ตรวจสอบระบบอีกครั้ง
+              </button>
+            </div>
+          </div>
+
+          <aside class="course-card" aria-labelledby="courseTitle">
+            <div class="course-card__icon" aria-hidden="true">✦</div>
+            <p class="course-card__label">หลักสูตรที่เปิดใช้งาน</p>
+            <h3 id="courseTitle">ยังไม่ได้ตั้งค่าหลักสูตร</h3>
+            <p id="courseDescription" class="muted">กรุณารัน setupSystem()</p>
+            <dl class="course-meta">
+              <div><dt>รุ่นอบรม</dt><dd id="batchName">—</dd></div>
+              <div><dt>วันที่</dt><dd id="trainingDate">—</dd></div>
+              <div><dt>สถานที่</dt><dd id="venue">—</dd></div>
+            </dl>
+          </aside>
+        </div>
+
+        <div class="feature-grid" aria-label="องค์ประกอบของระบบ">
+          <article class="feature-card feature-card--violet">
+            <span class="feature-card__icon" aria-hidden="true">01</span>
+            <h3>ระบบฐานข้อมูล</h3>
+            <p>โครงสร้างชีตและการตั้งค่ารองรับหลายหลักสูตรและหลายรุ่นอบรม</p>
+          </article>
+          <article class="feature-card feature-card--cyan">
+            <span class="feature-card__icon" aria-hidden="true">02</span>
+            <h3>ความปลอดภัย</h3>
+            <p>ตรวจสิทธิ์ผู้ดูแลฝั่ง Server และไม่ใช้รหัสผ่านข้อความปกติในชีต</p>
+          </article>
+          <article class="feature-card feature-card--peach">
+            <span class="feature-card__icon" aria-hidden="true">03</span>
+            <h3>พร้อมต่อยอด</h3>
+            <p>ลงทะเบียน ทำ Pre/Post-test และดูคะแนนกับ Learning Gain ได้บนมือถือและคอมพิวเตอร์</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section" id="page-resume" data-page="resume" hidden>
+        <div class="section-heading resume-heading">
+          <span class="pill pill--cyan">กลับมาทำต่อ</span>
+          <h2>ค้นหารายการลงทะเบียนของคุณ</h2>
+          <p>กรอกเบอร์โทรศัพท์เต็ม ระบบจะแสดงเฉพาะรายการลงทะเบียนที่ตรงกับเบอร์ดังกล่าว</p>
+        </div>
+
+        <form class="form-card resume-search-card" id="participantLookupForm">
+          <label class="field">
+            <span>เบอร์โทรศัพท์เต็ม</span>
+            <input id="participantLookupQuery" name="phone" type="tel" inputmode="numeric" autocomplete="tel" minlength="9" maxlength="10" pattern="0[0-9]{8,9}" placeholder="0xxxxxxxxx" required>
+          </label>
+          <div class="form-actions">
+            <button class="button button--ghost" type="button" data-navigate="home">กลับหน้าหลัก</button>
+            <button class="button button--primary" id="participantLookupButton" type="submit">ค้นหารายการ</button>
+          </div>
+        </form>
+
+        <div class="resume-results" id="participantLookupResults" hidden>
+          <div class="resume-results__header"><h3>รายการที่พบ</h3><p id="participantLookupMessage">—</p></div>
+          <div class="resume-candidate-list" id="participantCandidateList" role="radiogroup" aria-label="เลือกรายการลงทะเบียน"></div>
+          <form class="resume-confirm-card" id="participantResumeForm">
+            <input id="selectedCandidateRef" type="hidden">
+            <label class="field">
+              <span>ยืนยันเบอร์โทรศัพท์เต็ม</span>
+              <input id="participantConfirmPhone" type="tel" inputmode="numeric" autocomplete="tel" minlength="9" maxlength="10" pattern="0[0-9]{8,9}" required>
+              <small>ต้องตรงทุกหลัก ระบบจะไม่แสดงเบอร์เดิมหรือส่วนใดของเบอร์</small>
+            </label>
+            <div class="form-actions">
+              <button class="button button--success" id="participantResumeButton" type="submit" disabled>ยืนยันและทำรายการต่อ</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="empty-state resume-empty" id="participantLookupEmpty" hidden>
+          <div class="empty-state__icon" aria-hidden="true">?</div>
+          <h3>ไม่พบรายการลงทะเบียน</h3>
+          <p>ตรวจการสะกดชื่อหรือเบอร์โทรศัพท์ หากยังไม่มีรายชื่อสามารถส่งคำขอให้ผู้ดูแลตรวจสอบ</p>
+          <button class="button button--primary" type="button" data-navigate="registration">ลงทะเบียนใหม่</button>
+        </div>
+      </section>
+
+      <section class="page-section" id="page-registration" data-page="registration" hidden>
+        <div class="section-heading">
+          <span class="pill">ขั้นตอนที่ 1</span>
+          <h2>ลงทะเบียนเข้าร่วมการอบรม</h2>
+          <p>เลือกหมู่และชุมชน จากนั้นกรอกเบอร์โทรศัพท์เต็ม ระบบจะแสดงเฉพาะชื่อที่ตรงกับข้อมูลของคุณ</p>
+        </div>
+
+        <form class="form-card" id="registrationForm" novalidate>
+          <div class="form-grid form-grid--2">
+            <label class="field field--wide">
+              <span>หลักสูตร</span>
+              <select id="registrationCourse" name="courseId" required disabled></select>
+            </label>
+            <label class="field field--wide">
+              <span>รุ่นอบรม</span>
+              <select id="registrationBatch" name="batchId" required></select>
+            </label>
+
+            <label class="field">
+              <span>หมู่ที่ <b aria-hidden="true">*</b></span>
+              <select id="registrationMoo" name="moo" required><option value="">กำลังโหลดรายชื่อ...</option></select>
+            </label>
+            <label class="field">
+              <span>ชุมชน <b aria-hidden="true">*</b></span>
+              <select id="registrationCommunity" name="community" required disabled><option value="">เลือกหมู่ก่อน</option></select>
+            </label>
+            <label class="field field--wide">
+              <span>เบอร์โทรศัพท์เต็มเพื่อค้นหารายชื่อ <b aria-hidden="true">*</b></span>
+              <input id="registrationPhone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" minlength="9" maxlength="10" pattern="0[0-9]{8,9}" placeholder="0xxxxxxxxx" required>
+              <small>ต้องตรงทุกหลัก และระบบจะไม่แสดงเบอร์เดิมบนหน้าจอ</small>
+            </label>
+            <div class="field field--wide">
+              <button class="button button--secondary" id="verifyRosterButton" type="button">ค้นหาและยืนยันรายชื่อ</button>
+              <small id="rosterVerificationStatus">กรุณาเลือกหมู่ ชุมชน และกรอกเบอร์โทรศัพท์ก่อน</small>
+            </div>
+            <label class="field field--wide">
+              <span>ชื่อ–นามสกุลที่พบ</span>
+              <input id="registrationMatchedName" type="text" readonly placeholder="ระบบจะแสดงชื่อเมื่อยืนยันข้อมูลตรงกัน">
+              <input id="registrationRosterRef" name="rosterRef" type="hidden" required>
+              <small>ไม่มีรายชื่อ? กด “แจ้งเพิ่มรายชื่อ” ด้านล่าง</small>
+            </label>
+          </div>
+
+          <label class="consent-box">
+            <input name="consent" type="checkbox" value="true" required>
+            <span>ข้าพเจ้ายินยอมให้เก็บและใช้ข้อมูลนี้เพื่อบริหารการอบรม ประเมินผล และออก Certificate ตามวัตถุประสงค์ของระบบ</span>
+          </label>
+
+          <div class="form-actions">
+            <button class="button button--ghost" type="button" data-navigate="home">กลับหน้าหลัก</button>
+            <button class="button button--secondary" id="openRosterRequestButton" type="button">แจ้งเพิ่มรายชื่อ</button>
+            <button class="button button--primary" id="registerSubmitButton" type="submit">ลงทะเบียนและเริ่ม Pre-test</button>
+          </div>
+        </form>
+
+        <form class="form-card roster-request-card" id="rosterRequestForm" hidden novalidate>
+          <div class="section-heading section-heading--compact">
+            <span class="pill pill--cyan">ไม่พบรายชื่อ</span>
+            <h3>ส่งคำขอให้ผู้ดูแลตรวจสอบ</h3>
+            <p>เมื่อได้รับอนุมัติแล้ว ให้กลับมาหน้านี้ เลือกชื่อ และยืนยันด้วยเบอร์โทรศัพท์อีกครั้ง</p>
+          </div>
+          <div class="form-grid form-grid--2">
+            <label class="field field--wide"><span>ชื่อ–นามสกุล <b>*</b></span><input name="fullName" maxlength="300" required></label>
+            <label class="field field--wide"><span>ที่อยู่ <b>*</b></span><textarea name="address" rows="2" maxlength="500" required></textarea></label>
+            <label class="field"><span>หมู่ที่ <b>*</b></span><input name="moo" maxlength="40" inputmode="numeric" required></label>
+            <label class="field"><span>ชุมชน <b>*</b></span><input name="community" maxlength="200" required></label>
+            <label class="field field--wide"><span>เบอร์โทรศัพท์เต็ม <b>*</b></span><input name="phone" type="tel" inputmode="numeric" minlength="9" maxlength="10" pattern="0[0-9]{8,9}" required></label>
+          </div>
+          <label class="consent-box"><input name="consent" type="checkbox" value="true" required><span>ข้าพเจ้ายืนยันว่าข้อมูลถูกต้อง และยินยอมให้ผู้ดูแลตรวจสอบเพื่อเพิ่มรายชื่อเข้าระบบ</span></label>
+          <div class="form-actions">
+            <button class="button button--ghost" id="cancelRosterRequestButton" type="button">ยกเลิก</button>
+            <button class="button button--primary" id="submitRosterRequestButton" type="submit">ส่งคำขอ</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="page-section" id="page-pre-test" data-page="pre-test" hidden>
+        <div class="test-card" data-test-mode="PRE">
+          <div class="test-header">
+            <div><span class="pill">Pre-test</span><h2>แบบทดสอบก่อนอบรม</h2></div>
+            <div class="test-counter" id="preCounter">ข้อ 1 / 10</div>
+          </div>
+          <div class="progress-track" aria-label="ความคืบหน้าการทำ Pre-test">
+            <span id="preProgressBar"></span>
+          </div>
+          <div class="question-panel">
+            <p class="question-number" id="preQuestionNumber">คำถามข้อที่ 1</p>
+            <h3 id="preQuestionText">กำลังโหลดคำถาม...</h3>
+            <fieldset class="choice-list" id="preChoices"><legend class="sr-only">เลือกคำตอบ</legend></fieldset>
+          </div>
+          <div class="test-actions">
+            <button class="button button--ghost" id="prePreviousButton" type="button">ย้อนกลับ</button>
+            <button class="button button--primary" id="preNextButton" type="button">ข้อต่อไป</button>
+            <button class="button button--success" id="preSubmitButton" type="button" hidden>ส่งคำตอบ Pre-test</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section" id="page-post-test" data-page="post-test" hidden>
+        <div class="test-card" data-test-mode="POST">
+          <div class="test-header">
+            <div><span class="pill pill--cyan">Post-test</span><h2>แบบทดสอบหลังอบรม</h2></div>
+            <div class="test-counter" id="postCounter">ข้อ 1 / 10</div>
+          </div>
+          <div class="progress-track" aria-label="ความคืบหน้าการทำ Post-test">
+            <span id="postProgressBar"></span>
+          </div>
+          <div class="question-panel">
+            <p class="question-number" id="postQuestionNumber">คำถามข้อที่ 1</p>
+            <h3 id="postQuestionText">กำลังโหลดคำถาม...</h3>
+            <fieldset class="choice-list" id="postChoices"><legend class="sr-only">เลือกคำตอบ</legend></fieldset>
+          </div>
+          <div class="test-actions">
+            <button class="button button--ghost" id="postPreviousButton" type="button">ย้อนกลับ</button>
+            <button class="button button--primary" id="postNextButton" type="button">ข้อต่อไป</button>
+            <button class="button button--success" id="postSubmitButton" type="button" hidden>ส่งคำตอบ Post-test</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section" id="page-result" data-page="result" hidden>
+        <div class="result-hero">
+          <div class="result-hero__icon" aria-hidden="true">✓</div>
+          <span class="pill" id="resultModeLabel">ผลการทดสอบ</span>
+          <h2 id="resultHeading">บันทึกคะแนนสำเร็จ</h2>
+          <p id="resultParticipant">—</p>
+        </div>
+
+        <div class="completion-banner" id="evaluationCompleteBanner" hidden>
+          <span aria-hidden="true">✓</span>
+          <div><strong>ส่งแบบประเมินเรียบร้อยแล้ว</strong><p>ครบเงื่อนไขสำหรับออก Certificate</p></div>
+        </div>
+
+        <div class="result-grid" id="resultGrid">
+          <article class="metric-card"><span>Pre-test</span><strong id="resultPre">—</strong><small id="resultPrePercent">—</small></article>
+          <article class="metric-card"><span>Post-test</span><strong id="resultPost">—</strong><small id="resultPostPercent">—</small></article>
+          <article class="metric-card metric-card--gain"><span>Learning Gain</span><strong id="resultGain">—</strong><small>จุดร้อยละ</small></article>
+          <article class="metric-card metric-card--level"><span>ระดับผลการอบรม</span><strong id="resultLevel">—</strong><small>อ้างอิงคะแนน Post-test</small></article>
+        </div>
+
+        <div class="review-card" id="answerReview" hidden>
+          <h3>ทบทวนคำตอบหลัง Post-test</h3>
+          <div id="answerReviewList"></div>
+        </div>
+
+        <div class="result-actions">
+          <button class="button button--primary" id="startPostButton" type="button" hidden>เริ่ม Post-test</button>
+          <button class="button button--secondary" id="evaluationButton" type="button" hidden>ประเมินความพึงพอใจ</button>
+          <button class="button button--success" id="certificateButton" type="button" hidden>ออก Certificate</button>
+          <button class="button button--ghost" type="button" data-navigate="home">กลับหน้าหลัก</button>
+        </div>
+      </section>
+
+      <section class="page-section" id="page-certificate" data-page="certificate" hidden>
+        <div class="section-heading certificate-heading">
+          <span class="pill pill--cyan">ขั้นตอนที่ 5</span>
+          <h2>Certificate ของคุณ</h2>
+          <p id="certificateStatusText">กำลังตรวจสอบข้อมูล Certificate</p>
+        </div>
+        <article class="certificate-preview" id="certificatePreview" hidden>
+          <div class="certificate-preview__ornament" aria-hidden="true"></div>
+          <p class="certificate-preview__org" id="certificateOrganization">—</p>
+          <p class="certificate-preview__eyebrow">CERTIFICATE</p>
+          <p class="certificate-preview__label">ขอมอบเกียรติบัตรฉบับนี้ให้แก่</p>
+          <h3 id="certificateParticipantName">—</h3>
+          <p id="certificateCourseName">—</p>
+          <strong id="certificateResultLevel">—</strong>
+          <div class="certificate-preview__meta"><span id="certificateNumber">—</span><span id="certificateIssueDate">—</span></div>
+        </article>
+        <div class="certificate-warning" id="certificateWarning" hidden></div>
+        <div class="result-actions certificate-actions">
+          <button class="button button--primary" id="generateCertificateButton" type="button">สร้าง Certificate PDF</button>
+          <a class="button button--success" id="downloadCertificateButton" href="#" target="_blank" rel="noopener" hidden>ดาวน์โหลด PDF</a>
+          <button class="button button--secondary" id="shareCertificateButton" type="button" hidden>แชร์ลิงก์ตรวจสอบ</button>
+          <a class="button button--ghost" id="verifyCertificateLink" href="#" target="_blank" rel="noopener" hidden>เปิดหน้าตรวจสอบ</a>
+          <button class="button button--ghost" type="button" data-navigate="result">กลับดูผลคะแนน</button>
+        </div>
+      </section>
+
+      <section class="page-section" id="page-evaluation" data-page="evaluation" hidden>
+        <div class="section-heading">
+          <span class="pill pill--cyan">ขั้นตอนที่ 4</span>
+          <h2>ประเมินความพึงพอใจ</h2>
+          <p>โปรดประเมินตามความคิดเห็นจริง ข้อมูลจะนำไปใช้ปรับปรุงการอบรมครั้งต่อไป</p>
+        </div>
+
+        <form class="evaluation-form" id="evaluationForm" novalidate>
+          <div id="evaluationQuestionGroups"></div>
+          <div class="scale-note" aria-label="คำอธิบายระดับคะแนน">
+            <span><b>5</b> มากที่สุด</span><span><b>4</b> มาก</span><span><b>3</b> ปานกลาง</span>
+            <span><b>2</b> น้อย</span><span><b>1</b> น้อยที่สุด</span>
+          </div>
+          <div class="form-actions">
+            <button class="button button--ghost" type="button" data-navigate="result">กลับดูผลคะแนน</button>
+            <button class="button button--success" id="evaluationSubmitButton" type="submit">ส่งแบบประเมิน</button>
+          </div>
+        </form>
+      </section>
+
+      </section>
+
+      <section class="page-section" id="page-verify" data-page="verify" hidden>
+        <div class="verify-card" id="verifyCard">
+          <div class="verify-card__icon" id="verifyIcon" aria-hidden="true">⌁</div>
+          <span class="pill">Certificate Verification</span>
+          <h2 id="verifyHeading">กำลังตรวจสอบ Certificate</h2>
+          <p id="verifyMessage">โปรดรอสักครู่</p>
+          <dl class="verify-details" id="verifyDetails" hidden>
+            <div><dt>เลขที่ Certificate</dt><dd id="verifyCertNumber">—</dd></div>
+            <div><dt>ชื่อผู้ได้รับ</dt><dd id="verifyParticipantName">—</dd></div>
+            <div><dt>หลักสูตร</dt><dd id="verifyCourseName">—</dd></div>
+            <div><dt>วันที่ออก</dt><dd id="verifyIssueDate">—</dd></div>
+            <div><dt>ระดับผลการอบรม</dt><dd id="verifyResultLevel">—</dd></div>
+            <div><dt>สถานะ</dt><dd id="verifyStatus">—</dd></div>
+          </dl>
+          <button class="button button--ghost" type="button" data-navigate="home">กลับหน้าหลัก</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span id="footerAppName">ระบบประเมินผลการฝึกอบรม อสม.</span>
+      <span class="app-footer__credit">Designed &amp; Developed by <strong>Apiwat Meethong</strong></span>
+      <span id="appVersion">Version —</span>
+    </footer>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite" aria-hidden="true">
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="loadingText">กำลังโหลดข้อมูล...</p>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="modal" id="appModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__panel">
+      <button class="modal__close" type="button" aria-label="ปิดหน้าต่าง" data-close-modal>×</button>
+      <h2 id="modalTitle">ข้อความจากระบบ</h2>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
