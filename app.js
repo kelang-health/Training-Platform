@@ -529,7 +529,8 @@ function renderProgressResult(progress) {
   } : {
     mode: 'PRE', participant: progress.participant,
     score: pre ? pre.score : 0, total: pre ? pre.total : 0,
-    percentage: pre ? pre.percentage : 0
+    percentage: pre ? pre.percentage : 0,
+    postTestAccess: progress.postTestAccess || null
   };
   renderResult(result);
 }
@@ -658,7 +659,17 @@ async function resumeParticipantRegistrationClient(event) {
 
 async function continueFromRestoredStep(nextStep) {
   if (nextStep === 'pre-test') { await startTest('PRE'); return; }
-  if (nextStep === 'post-test') { await startTest('POST'); return; }
+  if (nextStep === 'post-test') {
+    const progress = await runServer('getParticipantProgress', AppState.session);
+    if (!progress.canStartPostTest) {
+      renderProgressResult(progress);
+      navigateTo('result');
+      showToast(progress.postTestAccess && progress.postTestAccess.message || 'ยังไม่เปิด Post-test', 'info');
+      return;
+    }
+    await startTest('POST');
+    return;
+  }
   if (nextStep === 'evaluation') { await startEvaluation(); return; }
   if (nextStep === 'result' || nextStep === 'certificate') { await openCertificatePage(true); return; }
   throw new Error('ไม่รู้จักขั้นตอนที่ต้องทำต่อ: ' + String(nextStep || 'ว่าง'));
@@ -809,6 +820,7 @@ function renderResult(result) {
   AppState.lastResult = result;
   const isPost = result.mode === 'POST';
   const evaluationCompleted = Boolean(result.evaluationCompleted);
+  const postTestAccess = result.postTestAccess || null;
 
   setText('resultModeLabel', isPost ? 'Post-test Result' : 'Pre-test Result');
   setText('resultHeading', isPost ? 'สรุปผลการเรียนรู้' : 'บันทึกคะแนน Pre-test สำเร็จ');
@@ -834,6 +846,15 @@ function renderResult(result) {
   const evaluationButton = document.getElementById('evaluationButton');
   const certificateButton = document.getElementById('certificateButton');
   startPostButton.hidden = isPost;
+  startPostButton.disabled = !isPost && Boolean(postTestAccess && !postTestAccess.canStart);
+  startPostButton.textContent = !isPost && postTestAccess && !postTestAccess.canStart
+    ? 'ยังไม่เปิด Post-test' : 'เริ่ม Post-test';
+  const postTestAccessMessage = document.getElementById('postTestAccessMessage');
+  if (postTestAccessMessage) {
+    postTestAccessMessage.hidden = isPost || !postTestAccess || postTestAccess.canStart;
+    postTestAccessMessage.textContent = postTestAccess && !postTestAccess.canStart
+      ? postTestAccess.message || 'ยังไม่เปิด Post-test' : '';
+  }
   evaluationButton.disabled = false;
   evaluationButton.hidden = !isPost || evaluationCompleted;
   if (certificateButton) certificateButton.hidden = !isPost || !evaluationCompleted;
